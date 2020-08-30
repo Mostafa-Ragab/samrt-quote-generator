@@ -3,8 +3,22 @@ const NewQuoteBtn = document.getElementById('new-quote');
 const TwitterBtn = document.getElementById('twitter');
 const authorText = document.getElementById('author');
 const quoteText = document.getElementById('quote');
+const loader = document.getElementById('loader')
+
+function loading() {
+    loader.hidden = false;
+    quoteContainer.hidden = true;
+};
+function complete() {
+    if (!loader.hidden) {
+        loader.hidden = true;
+        quoteContainer.hidden = false
+    }
+}
+
 // Get Quote From API 
 async function getQuote() {
+    loading()
      //  I need to use a Proxy URL to make my API call in order to avoid a CORS error
     const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
     const apiUrl = 'https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json';
@@ -24,7 +38,7 @@ async function getQuote() {
             quoteText.classList.remove('long-quote')
         }
         quoteText.innerText = data.quoteText
-        
+    complete()    
     } catch(error) {
         getQuote()
     }
